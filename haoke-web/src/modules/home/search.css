@@ -1,0 +1,8 @@
+.house-title{
+    overflow: hidden;
+    white-space: nowrap; /*强制在一行*/
+}
+.house-title em{
+    font-style: normal;
+    color: red;
+}
