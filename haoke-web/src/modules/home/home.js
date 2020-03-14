@@ -44,8 +44,10 @@ class Home extends React.Component {
             mapShowFlag: false,
             calcShowFlag: false,
             searchBarFlag: false,
+            searchData:[],
             totalPage: 0,
-            searchKeyWord:''
+            searchKeyWord:'',
+            hotWord:[]
         };
     }
 
@@ -110,8 +112,7 @@ class Home extends React.Component {
                 infoLoading: true,
                 faqLoading: true,
                 houseLoading: true,
-                globalLoading: false,
-                searchData: []
+                globalLoading: false
             })
             // this.setState({
             //   globalLoading: false
@@ -166,7 +167,7 @@ class Home extends React.Component {
         _this.searchHandle();
         this.setState({searchKeyWord:value});
         axios.get("http://127.0.0.1:18080/search?keyword=" + value + '&page='+page).then((data) => {
-            _this.setState({searchData: data.list, totalPage: data.totalPage});
+            _this.setState({searchData: data.list, hotWord: data.hotWord,totalPage: data.totalPage});
         });
     }
 
@@ -276,13 +277,14 @@ class Home extends React.Component {
                 {this.state.calcShowFlag ? <Calculator hideCalc={this.hideCalc}/> : null}
                 {this.state.searchBarFlag ? <SearchBar totalPage={this.state.totalPage} searchPage={this.search}
                                                        searchData={this.state.searchData}
-                                                       hideSearchBar={this.hideSearchBar}/> : null}
+                                                       hideSearchBar={this.hideSearchBar}
+                                                        hotWord={this.state.hotWord}/> : null}
                 <Dimmer inverted active={this.state.globalLoading} page>
                     <Loader>Loading</Loader>
                 </Dimmer>
                 <div className="home-topbar">
                     {/*onBlur={this.hideSearchBar} onFocus={this.searchHandle}*/}
-                    <Input onChange={this.search.bind(this)} fluid icon={{name: 'search', circular: true, link: true}}
+                    <Input onChange={this.search.bind(this)} value={this.state.searchKeyWord} fluid icon={{name: 'search', circular: true, link: true}}
                            placeholder='搜房源...'/>
                 </div>
                 <div className="home-content">

@@ -22,7 +22,8 @@
     "react-scripts": "1.1.4",
     "react-touch-loader": "^1.1.4",
     "semantic-ui-css": "^2.3.2",
-    "semantic-ui-react": "^0.81.2"
+    "semantic-ui-react": "^0.81.2",
+    "prop-types": "latest"
   },
   "scripts": {
     "start": "set PORT=9000 && react-scripts start",

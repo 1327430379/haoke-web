@@ -5,4 +5,5 @@ export default {
   imgBaseUrl: 'http://127.0.0.1:8086/',
   apiBaseUrl: 'http://127.0.0.1:8086/',
   wsBaseUrl: 'ws://127.0.0.1:8087'
+  IMG_BASE_URL:'http://image.haoke.com/'
 }

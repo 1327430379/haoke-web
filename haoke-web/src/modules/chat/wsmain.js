@@ -4,7 +4,7 @@ import DataPacket from './DataPacket.js'
 import config from '../../common.js';
 
 const handle = (currentUser, handleMsg) => {
-  const client = new IMClient(config.wsBaseUrl);
+  const client = new IMClient(config.wsBaseUrl + "/" + currentUser, handleMsg);
   // 发送消息
   client.addEventListener(IMEvent.MSG_TEXT_SEND, data => {
     let dataPacket = new DataPacket({

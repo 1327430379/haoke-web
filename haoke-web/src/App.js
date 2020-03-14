@@ -34,6 +34,7 @@ class App extends Component {
           <Route path="/show" component={Show}/>
           <Route path="/home" component={Main}/>
           <Route path="/abc" component={House} />
+          <Route path="/detail/:id" component={Detail} />
           <Redirect to="/"/>
         </Switch>
       </BrowserRouter>

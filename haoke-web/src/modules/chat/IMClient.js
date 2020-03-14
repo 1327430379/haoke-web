@@ -5,47 +5,48 @@ import IMEvent from "./IMEvent.js"
  * 通讯客户端
  */
 class IMClient {
-  constructor(url) {
-      this._url = url;
-      this._autoConnect = true;
-      this._handlers = {};
-      this._DataPacketQueue = [];
-      this._isOpened = false;
-
-      this.addEventListener(IMEvent.CONNECTED, () => {
-        this.serverOnConnected();
-      })
-
-      // this.addEventListener(IMEvent.CONNECTED, () => {
-      //   this.clearMsgQueue();
-      // })
-
-      this.addEventListener(IMEvent.DISCONNECTED, () => {
-        this.serverOnDisconnected();
-      })
-    }
+  constructor(url, onMyMessage) {
+    this._url = url;
+    this._autoConnect = true;
+    this._handlers = {};
+    this._DataPacketQueue = [];
+    this._isOpened = false;
+    this.onMyMessage = onMyMessage;
+    this.addEventListener(IMEvent.CONNECTED, () => {
+      this.serverOnConnected();
+    })
+    // this.addEventListener(IMEvent.CONNECTED, () => {
+    //  this.clearMsgQueue();
+    // })
+    this.addEventListener(IMEvent.DISCONNECTED, () => {
+      this.serverOnDisconnected();
+    })
+  }
     /**
      * 底层通讯函数回调
      */
-    // 连接
-  connect() {
-    if (!this._socket) {
-      this._socket = new WebSocket(this._url);
+    //连接
+    connect() {
+     if (!this._socket) {
+      this._socket = new WebSocket(this._url);
+      this._socket.onmessage = (evt) => {
+       this.onMessage(evt.data);
+       if(this.onMyMessage){
+         this.onMyMessage(evt.data);
+      }
+     }
+      this._socket.onopen = (ws) => {
+       this.onOpen(ws);
+     }
+      this._socket.onclose = ws => {
 
-      this._socket.onmessage = (evt) => {
-        this.onMessage(evt.data);
-      }
-      this._socket.onopen = (ws) => {
-        this.onOpen(ws);
-      }
-      this._socket.onclose = ws => {
-        this.onClose(ws);
-      }
-      this._socket.onerror = ws => {
-        this.onError(ws);
-      };
+       this.onClose(ws);
+     }
+      this._socket.onerror = ws => {
+       this.onError(ws);
+     };
     }
-  }
+    }
 
   // 消息接收
   onMessage(message) {
