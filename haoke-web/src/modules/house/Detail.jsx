@@ -6,6 +6,9 @@ import {Carousel, Flex, Modal, Toast} from "antd-mobile";
 import styles from './index.module.scss'
 import NavHeader from "../../common/NavHeader";
 import {IMG_BASE_URL} from '../../common'
+import FlexItem from "antd-mobile/es/flex/FlexItem";
+import HousePackag from '../../common/HousePackage'
+
 export default class Detail extends React.Component {
 
     state = {
@@ -123,8 +126,8 @@ export default class Detail extends React.Component {
                 {/*轮播图*/}
                 <div className={slides}>
                     <Carousel autoplay infinite>
-                        {houseImg.map(item=>{
-                            <a key={item} href="www.alipay.com">
+                        {houseImg.map(item => {
+                            <a key={item} href="http://www.alipay.com">
                                 <img src={`${IMG_BASE_URL}${item}`} alt=""/>
                             </a>
                         })}
@@ -133,8 +136,115 @@ export default class Detail extends React.Component {
                 {/*房屋基础信息*/}
                 <div className="info">
                     <h3 className="infoTitle">{title}</h3>
-                    <Flex className="tags"></Flex>
+
+                    <Flex className="tags">
+                        {/*<Flex.Item>{this.}</Flex.Item>*/}
+                    </Flex>
+
+                    <Flex className="infoPrice">
+                        <FlexItem className="infoPriceItem">
+                            <div>
+                                {price}
+                                <h3 className="month">/月</h3>
+                                <div>租金</div>
+                            </div>
+                        </FlexItem>
+                        <Flex.Item className="infoPriceItem">
+                            <div>{roomType}</div>
+                            <div>房型</div>
+                        </Flex.Item>
+                        <Flex.Item className="infoPriceItem">
+                            <div>{size}平米</div>
+                            <div>面积</div>
+                        </Flex.Item>
+                    </Flex>
+                    <Flex className="infoBasic">
+                        <FlexItem>
+                            <div>
+                                <span className="title">装修：</span>
+                                精装
+                            </div>
+                            <div>
+                                <span className="title">楼层：</span>
+                                {floor}
+                            </div>
+                        </FlexItem>
+                        <FlexItem>
+                            <div>
+                                <span className="title">朝向：</span>
+                                {oriented.join('、')}
+                            </div>
+                            <div>
+                                <span className="title">类型：</span>普通住宅
+                            </div>
+                        </FlexItem>
+                    </Flex>
                 </div>
+                {/*渲染百度地图*/}
+                <div className="map">
+                    <div className="mapTitle">
+                        小区：
+                        <span>{community}</span>
+                    </div>
+                    <div className="mapContainer" id="map">
+                        地图
+                    </div>
+                </div>
+                {/*房屋配套*/}
+                <div className="about">
+                    <div className="houseTitle">房屋配套</div>
+                    {supporting.length == 0 ? (
+                        <div className="titleEmpty">暂无数据</div>
+                    ) : (
+                        <HousePackage list={supporting}/>
+                    )}
+                </div>
+                {/*房屋概况*/}
+                <div className="set">
+                    <div className="houseTitle">房源概况</div>
+                    <div>
+                        <div className="contact">
+                            <div className="user">
+                                <img src={IMG_BASE_URL + '/img/avatar.png'} alt="头像"/>
+                                <div className="userInfo">
+                                    <div>王女士</div>
+                                    <div className="userAuth">
+                                        <i className="iconfont icon-auth"/>
+                                        已认证房主
+                                    </div>
+                                </div>
+                            </div>
+                            <span className="userMsg">发消息</span>
+                        </div>
+                        <div className="descText">{description || '暂无房屋描述'}</div>
+                    </div>
+                </div>
+                {/*推荐*/}
+
+                //todo 需要添加推荐的代码
+
+                {/*底部收藏按钮*/}
+                <Flex className="fixedBotto">
+                    <FlexItem onClick={this.handleFavorite}>
+                        <img
+                            src={
+                                IMG_BASE_URL +
+                                (this.state.isFavorite ? '/img/star.png' : '/img/unstar.png')
+                            }
+                            className="favoriteImg"
+                            alt="收藏"
+                        />
+                        <span className="favorite">
+                            {this.state.isFavorite ? '已收藏' : '收藏'}
+                        </span>
+                    </FlexItem>
+                    <Flex.Item>在线咨询</Flex.Item>
+                    <Flex.Item>
+                        <a href="tel:400-618-4000" className="telephone">
+                            电话预约
+                        </a>
+                    </Flex.Item>
+                </Flex>
             </div>
         )
     }
