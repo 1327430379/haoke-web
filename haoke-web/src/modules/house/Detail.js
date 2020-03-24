@@ -7,36 +7,49 @@ import styles from './index.module.scss'
 import NavHeader from "../../common/NavHeader";
 import {IMG_BASE_URL} from '../../common'
 import FlexItem from "antd-mobile/es/flex/FlexItem";
-import HousePackag from '../../common/HousePackage'
+import HousePackage from '../../common/HousePackage'
+import {API} from "../utils/api";
+import {REQUEST_URL} from "../../common";
+import classnames from 'classnames'
 
 export default class Detail extends React.Component {
 
     state = {
-        houseInfo: null,
+        houseInfo:{
+            image:'',
+            title:"",
+            rent:'',
+            houseType:'',
+            floor:'',
+            orientation:'',
+        },
         isFavorite: false
     }
 
     checkLove = async id => {
-        asios.get('/usr/favorites/${id}').then(res => {
+        asios.get('/user/favorites/${id}').then(res => {
             this.setState({
                 isFavorite: res.data.isFavorite
             })
         })
     }
 
-    async componentDisCount() {
-        //接收传来的参数id
+    async componentDidMount() {
         const id = this.props.match.params.id;
+        //接收传来的参数id
         this.id = id;
-        const res = await asios.get('house/${id}')
+        console.log(id)
+        const res = await API.get(`${REQUEST_URL}house/resources/${id}`)
+        console.log(res)
         this.setState({
             //isFavorite: res.body.isFavorite
+            houseInfo :res.data
         })
 
         //发送请求判断是否收藏
-        if (!hasToken()) return
-
-        this.checkLove(id)
+        // if (!hasToken()) return
+        //
+        // this.checkLove(id)
     }
 
     //添加收藏
@@ -76,7 +89,7 @@ export default class Detail extends React.Component {
             })
         } else {
             //没有收藏 则收藏
-            await asios.post(`/usr/favorites/${this.id}`)
+            const res = API.post(`user/favorites/${this.id}`)
             if (res.status === 200) {
                 Toast.success("添加收藏")
                 this.setState({
@@ -93,68 +106,67 @@ export default class Detail extends React.Component {
                     }
                 ])
             }
+
         }
     }
 
     render() {
         const {houseInfo} = this.state
         if (!houseInfo) {
-            return null
+           // return null
         }
         const {
-            community,
-            houseImg,
+
+            image,
             title,
-            price,
-            roomType,
-            size,
+            rent,
+            houseType,
             floor,
-            oriented,
-            tags,
-            supporting,
-            description
+            orientation,
+
         } = houseInfo
 
         return (
+
             <div className={styles.detail}>
-                <NavHeader
-                    className="navHeader"
-                    rightContent={[<i key="share" className="iconfont icon-share"/>]}
-                >
-                    {community}
-                </NavHeader>
+                {/*<NavHeader key='ggg'*/}
+                {/*    className="navHeader"*/}
+                {/*    rightContent={[<i key="share" className="iconfont icon-share"/>]}*/}
+                {/*>*/}
+                {/*    /!*{community}*!/*/}
+                {/*</NavHeader>*/}
                 {/*轮播图*/}
-                <div className={slides}>
+                <div className="slides">
                     <Carousel autoplay infinite>
-                        {houseImg.map(item => {
-                            <a key={item} href="http://www.alipay.com">
-                                <img src={`${IMG_BASE_URL}${item}`} alt=""/>
+
+                            <a key={image} href="http://www.alipay.com">
+                                <img src={`${IMG_BASE_URL}/images/${image}`} alt=""/>
                             </a>
-                        })}
+
                     </Carousel>
                 </div>
-                {/*房屋基础信息*/}
+                房屋基础信息
                 <div className="info">
                     <h3 className="infoTitle">{title}</h3>
 
-                    <Flex className="tags">
-                        {/*<Flex.Item>{this.}</Flex.Item>*/}
-                    </Flex>
+                    {/*<Flex className="tags">*/}
+                    {/*    /!*<Flex.Item>{this.}</Flex.Item>*!/*/}
+                    {/*</Flex>*/}
 
                     <Flex className="infoPrice">
                         <FlexItem className="infoPriceItem">
                             <div>
-                                {price}
+                                {rent}
                                 <h3 className="month">/月</h3>
                                 <div>租金</div>
                             </div>
                         </FlexItem>
                         <Flex.Item className="infoPriceItem">
-                            <div>{roomType}</div>
+                            <div>{houseType}</div>
                             <div>房型</div>
                         </Flex.Item>
                         <Flex.Item className="infoPriceItem">
-                            <div>{size}平米</div>
+                            <div>{orientation}平米</div>
                             <div>面积</div>
                         </Flex.Item>
                     </Flex>
@@ -172,7 +184,7 @@ export default class Detail extends React.Component {
                         <FlexItem>
                             <div>
                                 <span className="title">朝向：</span>
-                                {oriented.join('、')}
+                                {/*{oriented.join('、')}*/}
                             </div>
                             <div>
                                 <span className="title">类型：</span>普通住宅
@@ -181,24 +193,24 @@ export default class Detail extends React.Component {
                     </Flex>
                 </div>
                 {/*渲染百度地图*/}
-                <div className="map">
-                    <div className="mapTitle">
-                        小区：
-                        <span>{community}</span>
-                    </div>
-                    <div className="mapContainer" id="map">
-                        地图
-                    </div>
-                </div>
+                {/*<div className="map">*/}
+                {/*    <div className="mapTitle">*/}
+                {/*        小区：*/}
+                {/*        <span>{community}</span>*/}
+                {/*    </div>*/}
+                {/*    <div className="mapContainer" id="map">*/}
+                {/*        地图*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 {/*房屋配套*/}
-                <div className="about">
-                    <div className="houseTitle">房屋配套</div>
-                    {supporting.length == 0 ? (
-                        <div className="titleEmpty">暂无数据</div>
-                    ) : (
-                        <HousePackage list={supporting}/>
-                    )}
-                </div>
+                {/*<div className="about">*/}
+                {/*    <div className="houseTitle">房屋配套</div>*/}
+                {/*    {supporting.length == 0 ? (*/}
+                {/*        <div className="titleEmpty">暂无数据</div>*/}
+                {/*    ) : (*/}
+                {/*        <HousePackage list={supporting}/>*/}
+                {/*    )}*/}
+                {/*</div>*/}
                 {/*房屋概况*/}
                 <div className="set">
                     <div className="houseTitle">房源概况</div>
@@ -216,14 +228,14 @@ export default class Detail extends React.Component {
                             </div>
                             <span className="userMsg">发消息</span>
                         </div>
-                        <div className="descText">{description || '暂无房屋描述'}</div>
+                        <div className="descText">{'暂无房屋描述'}</div>
                     </div>
                 </div>
                 {/*推荐*/}
 
                 //todo 需要添加推荐的代码
 
-                {/*底部收藏按钮*/}
+                底部收藏按钮
                 <Flex className="fixedBotto">
                     <FlexItem onClick={this.handleFavorite}>
                         <img

@@ -3,15 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd-mobile": "^2.1.10",
+    "antd-mobile": "^2.3.1",
     "apollo-boost": "^0.1.22",
     "axios": "^0.18.0",
+    "classnames": "latest",
+    "css-loader": "^3.4.2",
     "echarts": "^4.1.0",
     "echarts-for-react": "^2.0.13",
     "graphql": "^14.0.2",
     "iscroll": "^5.2.0",
     "iscroll-luo": "^1.2.3",
     "nuka-carousel": "^4.2.3",
+    "prop-types": "latest",
     "react": "^16.3.2",
     "react-apollo": "^2.3.1",
     "react-avatar-editor": "^11.0.4",
@@ -21,15 +24,33 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "react-touch-loader": "^1.1.4",
+    "scss": "^0.2.4",
     "semantic-ui-css": "^2.3.2",
-    "semantic-ui-react": "^0.81.2",
-    "prop-types": "latest",
-    "classnames": "latest"
+    "semantic-ui-react": "^0.81.2"
   },
   "scripts": {
     "start": "set PORT=9000 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.13.0",
+    "node-sass": "^4.12.0"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

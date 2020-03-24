@@ -2,8 +2,8 @@ import React from 'react';
 import ChatWindow from './chat-window.js';
 import axios from 'axios';
 import './chat.css';
-import config from '../../common.js';
-
+import IMEvent from "./IMEvent";
+import config from '../../common'
 class Chat extends React.Component {
   constructor(props) {
     super(props);
@@ -27,15 +27,15 @@ class Chat extends React.Component {
       }
     });
   }
-  // sendMsg = (msg) => {
-  //   let pdata = {
-  //     from_user: this.state.chatInfo.from_user,
-  //     to_user: this.state.chatInfo.to_user,
-  //     avatar: this.state.chatInfo.avatar,
-  //     chat_msg: msg
-  //   }
-  //   this.state.client.emitEvent(IMEvent.MSG_TEXT_SEND,JSON.stringify(pdata));
-  // }
+  sendMsg = (msg) => {
+    let pdata = {
+      from_user: this.state.chatInfo.from_user,
+      to_user: this.state.chatInfo.to_user,
+      avatar: this.state.chatInfo.avatar,
+      chat_msg: msg
+    }
+    this.state.client.emitEvent(IMEvent.MSG_TEXT_SEND,JSON.stringify(pdata));
+  }
   hideChat = () => {
     this.setState({isShow:false});
   }

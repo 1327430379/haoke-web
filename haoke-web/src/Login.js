@@ -27,14 +27,18 @@ class Login extends Component {
         localStorage.setItem('uid',ret.data.uid);
         history.push('/home');
       } else {
-        console.log(ret.meta.msg)
+        alert(ret.meta.msg);
       }
     }).catch(function(data){
       console.log(data)
     })
   }
+  componentDidMount() {
+
+  }
 
   render() {
+
     const { username, password } = this.state
     return (
       <div className='login-container'>
@@ -62,7 +66,7 @@ class Login extends Component {
               onChange={this.handleChange}
               placeholder='请输入密码...' 
             />
-            <Form.Button positive content='登录' />
+            <Form.Button positive content='登录'/>
           </Form>
         </div>
       </div>

@@ -4,7 +4,6 @@ import './chat-window.css';
 import axios from 'axios';
 import handle from './wsmain.js';
 import IMEvent from './IMEvent.js'
-import config from '../../common.js';
 
 class Chat extends React.Component {
   constructor(props) {
@@ -47,25 +46,25 @@ class Chat extends React.Component {
     })
     this.state.client.emitEvent(IMEvent.MSG_TEXT_SEND,JSON.stringify(pdata));
   }
-  // componentDidMount = () => {
-  //   let {to_user,from_user} = this.props.chatInfo;
-  //   axios.post('/chats/info',{
-  //     to_user: to_user,
-  //     from_user: from_user
-  //   }).then(data=>{
-  //     this.setState({
-  //       infos: data.data.list,
-  //       isLoading: true,
-  //       client: handle(localStorage.getItem('uid'),(data)=>{
-  //         let newList = [...this.state.infos];
-  //         newList.push(JSON.parse(data.content));
-  //         this.setState({
-  //           infos: newList
-  //         })
-  //       })
-  //     });
-  //   })
-  // }
+  componentDidMount = () => {
+    let {to_user,from_user} = this.props.chatInfo;
+    axios.post('/chats/info',{
+      to_user: to_user,
+      from_user: from_user
+    }).then(data=>{
+      this.setState({
+        infos: data.data.list,
+        isLoading: true,
+        client: handle(localStorage.getItem('uid'),(data)=>{
+          let newList = [...this.state.infos];
+          newList.push(JSON.parse(data.content));
+          this.setState({
+            infos: newList
+          })
+        })
+      });
+    })
+  }
 
   componentDidMount = () => {
     let {to_user,from_user} = this.props.chatInfo;

@@ -3,8 +3,12 @@ import {Icon, Pagination,Item, ItemDescription, ItemGroup, ItemImage, ItemMeta,L
 import ItemContent from "semantic-ui-react/dist/commonjs/views/Item/ItemContent";
 import ItemHeader from "semantic-ui-react/dist/commonjs/views/Item/ItemHeader";
 import './search.css'
+import {withRouter} from 'react-router-dom'
 class SearchBar extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
     handlePageChange = (e,{activePage})=>{
         this.props.searchPage(null,{
             page:activePage
@@ -20,7 +24,7 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <div className = 'search-bar' >
+      <div className = 'search-bar' key="445">
           <Icon onClick={this.hideSearchBar} name='angle left' size='large'/>
           {
               this.props.totalPage > 1 ? (
@@ -55,8 +59,8 @@ class SearchBar extends React.Component {
               {
                   this.props.searchData.map(item=>{
                       return(
-                          <Item key={item.id}>
-                              <ItemImage src ={"http://image.haoke.com/images/"+item.image}/>
+                          <Item key={item.id} onClick={()=>this.props.history.push(`/detail/${item.id}`)}>
+                              <ItemImage src ={"http://image.haoke.com:8081/images/"+item.image}/>
                               <ItemContent>
                                   <ItemHeader><div className='house-title'  dangerouslySetInnerHTML={{__html:item.title}}></div></ItemHeader>
 
@@ -77,4 +81,4 @@ class SearchBar extends React.Component {
     );
   }
 }
-export default SearchBar;
+export default withRouter(SearchBar);

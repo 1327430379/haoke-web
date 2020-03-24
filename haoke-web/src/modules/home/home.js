@@ -65,18 +65,17 @@ class Home extends React.Component {
         //     globalLoading: false
         //   })
         // });
-        //   let swipe = new Promise((resolve, reject) => {
-        //     // axios.post('/homes/swipe').then((data)=>{
-        //     axios.get('http://127.0.0.1:18080/ad').then((data)=>{
-        //         resolve(data.data.list);
-        //     });
-        // })
-
-        let swipe = new Promise((resolve, reject) => {
-            client.query({query: GET_INDEX_ADS}).then(result =>
-                resolve(result.data.IndexAdList.list));
+          let swipe = new Promise((resolve, reject) => {
+            // axios.post('/homes/swipe').then((data)=>{
+            axios.get('http://127.0.0.1:18080/ad').then((data)=>{
+                resolve(data.data.list);
+            });
         })
 
+        // let swipe = new Promise((resolve, reject) => {
+        //     client.query({query: GET_INDEX_ADS}).then(result =>
+        //         resolve(result.data.IndexAdList.list));
+        // })
         let menu = new Promise((resolve, reject) => {
             /*axios.post('/homes/menu').then((data)=>{
                 resolve(data.data.list);
@@ -95,12 +94,14 @@ class Home extends React.Component {
                 resolve(data.data.list);
             });
         })
+
         let house = new Promise((resolve, reject) => {
             axios.get('http://localhost:18080/mock/index/house').then((data) => {
                 resolve(data.data.list);
             });
         })
-        Promise.all([swipe, menu, info, faq, house]).then((result) => {
+        Promise.all([swipe,menu, info, faq, house]).then((result) => {
+            console.log(result[0]);
             this.setState({
                 swipeData: result[0],
                 menuData: result[1],
@@ -173,17 +174,17 @@ class Home extends React.Component {
 
     render() {
         // 轮播图渲染
-        const swipeLoading = this.state.swipeLoading;
-        const swipeData = this.state.swipeData;
-        let swipe = null;
-        if (swipeLoading) {
-            swipe = <ImageGallery
-                preventDefaultTouchmoveEvent={true}
-                autoPlay={true}
-                disableSwipe={false}
-                showThumbnails={false}
-                items={swipeData}/>
-        }
+        // const swipeLoading = this.state.swipeLoading;
+        // const swipeData = this.state.swipeData;
+        // let swipe = null;
+        // if (swipeLoading) {
+        //     swipe = <ImageGallery
+        //         preventDefaultTouchmoveEvent={true}
+        //         autoPlay={true}
+        //         disableSwipe={false}
+        //         showThumbnails={false}
+        //         items={swipeData}/>
+        // }
         // 菜单渲染
         const menuLoading = this.state.menuLoading;
         const menuData = this.state.menuData;
@@ -288,7 +289,7 @@ class Home extends React.Component {
                            placeholder='搜房源...'/>
                 </div>
                 <div className="home-content">
-                    {swipe}
+                    {/*{swipe}*/}
                     {menu}
                     <div className='home-msg'>
                         <Item.Group unstackable>

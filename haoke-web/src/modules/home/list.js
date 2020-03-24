@@ -1,8 +1,6 @@
 import React from 'react';
 import {withRouter} from 'react-router';
 import {Icon, Item} from 'semantic-ui-react';
-import config from '../../common.js';
-import axios from 'axios';
 import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
 
