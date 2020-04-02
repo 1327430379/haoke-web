@@ -1,7 +1,7 @@
 /*
 操作本地的token
  */
-const TOKEN_KEY = 'my_token'
+const TOKEN_KEY = 'mytoken'
 
 export function getToken() {
     return localStorage.getItem(TOKEN_KEY)

@@ -7,6 +7,9 @@ import classnames from 'classnames'
 
  class NavHeader extends React.Component{
 
+    handleClick=()=>{
+       this.props.history.push('/seeHouse/cancel')
+    }
     static propTypes = {
         children:PropTypes.string.isRequired
     }
@@ -18,7 +21,7 @@ import classnames from 'classnames'
             mode="light"
             icon={<i className="iconfont icon-back"/>}
             onLeftClick={()=>this.props.history.go(-1)}
-            rightContent={rightContent}
+            rightContent={<span onClick={this.handleClick}>{rightContent}</span>}
             >
                 {this.props.children}
 

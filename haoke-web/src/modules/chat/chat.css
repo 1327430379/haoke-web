@@ -84,3 +84,14 @@
 .chat-list::-webkit-scrollbar-track-piece {
   height: 30px;
 }
+
+.notice-item-title{
+  padding: 20px 10px;
+  font-weight: bold;
+  color: black;
+  font-size: 20px;
+  line-height: 20px;
+}
+.notice-btn-disable{
+  pointer-events: none;
+}

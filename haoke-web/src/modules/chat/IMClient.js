@@ -83,11 +83,12 @@ class IMClient {
 
   // 向服务器发送数据包
   sendDataPacket(dataPacket) {
-    if (this._isOpened) {
-      this._socket.send(dataPacket.rawMessage);
-    } else {
-      this._DataPacketQueue.push(dataPacket);
-    }
+    // if (this._isOpened) {
+    //   this._socket.send(dataPacket.rawMessage);
+    // } else {
+    //   this._DataPacketQueue.push(dataPacket);
+    // }
+    this._socket.send(dataPacket);
   }
 
   /**

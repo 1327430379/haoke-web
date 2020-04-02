@@ -2,8 +2,8 @@ import React from 'react'
 import asios from 'axios'
 import config from '../../common.js'
 import {hasToken} from "../utils/token";
-import {Carousel, Flex, Modal, Toast} from "antd-mobile";
-import styles from './index.module.scss'
+import {Carousel, Flex, Modal, Toast, Button} from "antd-mobile";
+import styles from './index.css'
 import NavHeader from "../../common/NavHeader";
 import {IMG_BASE_URL} from '../../common'
 import FlexItem from "antd-mobile/es/flex/FlexItem";
@@ -15,13 +15,16 @@ import classnames from 'classnames'
 export default class Detail extends React.Component {
 
     state = {
-        houseInfo:{
-            image:'',
-            title:"",
-            rent:'',
-            houseType:'',
-            floor:'',
-            orientation:'',
+        houseInfo: {
+            houseOwnerId:'',
+            id: '',
+            img: ['http://image.haoke.com:8081/images/SH2158494573566107648.jpg', 'http://image.haoke.com:8081/images/SH2158494573566107648.jpg'],
+            image: '',
+            title: "",
+            rent: '',
+            houseType: '',
+            floor: '',
+            orientation: '',
         },
         isFavorite: false
     }
@@ -35,15 +38,16 @@ export default class Detail extends React.Component {
     }
 
     async componentDidMount() {
-        const id = this.props.match.params.id;
+        this.state.houseInfo.id = this.props.match.params.id;
         //接收传来的参数id
-        this.id = id;
+        const id = this.state.houseInfo.id
         console.log(id)
         const res = await API.get(`${REQUEST_URL}house/resources/${id}`)
         console.log(res)
         this.setState({
             //isFavorite: res.body.isFavorite
-            houseInfo :res.data
+            houseInfo: res.data
+
         })
 
         //发送请求判断是否收藏
@@ -109,14 +113,23 @@ export default class Detail extends React.Component {
 
         }
     }
+    handleMsg = () => {
+        console.log("gg");
+        Toast.info("gdg", 1);
+    }
+
+    sendMsg = ()=>{
+
+    }
 
     render() {
         const {houseInfo} = this.state
         if (!houseInfo) {
-           // return null
+            // return null
         }
         const {
-
+            houseOwnerId,
+            img,
             image,
             title,
             rent,
@@ -125,23 +138,28 @@ export default class Detail extends React.Component {
             orientation,
 
         } = houseInfo
-
+        houseInfo.img = ['http://image.haoke.com:8081/images/SH2158494573566107648.jpg', 'http://image.haoke.com:8081/images/SH2158494573566107648.jpg']
+        console.log("gdgd" + houseInfo.img.length)
         return (
 
-            <div className={styles.detail}>
-                {/*<NavHeader key='ggg'*/}
-                {/*    className="navHeader"*/}
-                {/*    rightContent={[<i key="share" className="iconfont icon-share"/>]}*/}
-                {/*>*/}
-                {/*    /!*{community}*!/*/}
-                {/*</NavHeader>*/}
+            <div className="detail">
+
+                <NavHeader key='ggg'
+                           className="navHeader"
+                           rightContent={[<i key="share" className="iconfont icon-share"/>]}
+                >
+                    {/*{community}*/}
+                </NavHeader>
                 {/*轮播图*/}
                 <div className="slides">
                     <Carousel autoplay infinite>
-
-                            <a key={image} href="http://www.alipay.com">
-                                <img src={`${IMG_BASE_URL}/images/${image}`} alt=""/>
+                        {houseInfo.img.map(item => (
+                            <a key={item} href="http://www.alipay.com">
+                                {/*`${IMG_BASE_URL}images/${image}`*/}
+                                <img src={item} alt=""/>
                             </a>
+                        ))}
+
 
                     </Carousel>
                 </div>
@@ -156,8 +174,7 @@ export default class Detail extends React.Component {
                     <Flex className="infoPrice">
                         <FlexItem className="infoPriceItem">
                             <div>
-                                {rent}
-                                <h3 className="month">/月</h3>
+                                {rent}/月
                                 <div>租金</div>
                             </div>
                         </FlexItem>
@@ -217,7 +234,7 @@ export default class Detail extends React.Component {
                     <div>
                         <div className="contact">
                             <div className="user">
-                                <img src={IMG_BASE_URL + '/img/avatar.png'} alt="头像"/>
+                                {/*<img src={IMG_BASE_URL + '/img/avatar.png'} alt="头像"/>*/}
                                 <div className="userInfo">
                                     <div>王女士</div>
                                     <div className="userAuth">
@@ -226,34 +243,33 @@ export default class Detail extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <span className="userMsg">发消息</span>
+                            <span className="userMsg" onClick={this.sendMsg}>发消息</span>
                         </div>
                         <div className="descText">{'暂无房屋描述'}</div>
                     </div>
                 </div>
                 {/*推荐*/}
 
-                //todo 需要添加推荐的代码
 
-                底部收藏按钮
-                <Flex className="fixedBotto">
+                <Flex className="fixedBottom">
                     <FlexItem onClick={this.handleFavorite}>
-                        <img
-                            src={
-                                IMG_BASE_URL +
-                                (this.state.isFavorite ? '/img/star.png' : '/img/unstar.png')
-                            }
-                            className="favoriteImg"
-                            alt="收藏"
-                        />
+                        {/*<img*/}
+                        {/*    src={*/}
+                        {/*        IMG_BASE_URL +*/}
+                        {/*        (this.state.isFavorite ? '/images/local/unfavorite.png' : '/images/local/favorite.png')*/}
+                        {/*    }*/}
+                        {/*    className="favoriteImg"*/}
+                        {/*    alt="收藏"*/}
+                        {/*/>*/}
                         <span className="favorite">
                             {this.state.isFavorite ? '已收藏' : '收藏'}
                         </span>
                     </FlexItem>
                     <Flex.Item>在线咨询</Flex.Item>
                     <Flex.Item>
-                        <a href="tel:400-618-4000" className="telephone">
-                            电话预约
+                        <a className="telephone"
+                           onClick={() => this.props.history.push(`/seeHouse/appointment/${this.state.houseInfo.id}`)}>
+                            看房预约
                         </a>
                     </Flex.Item>
                 </Flex>

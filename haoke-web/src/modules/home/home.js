@@ -12,6 +12,7 @@ import Calculator from './calc.js';
 import SearchBar from './searchbar.js';
 import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
+import {API} from "../utils/api";
 
 const client = new ApolloClient({
     uri: "http://127.0.0.1:18080/graphql"
@@ -44,10 +45,10 @@ class Home extends React.Component {
             mapShowFlag: false,
             calcShowFlag: false,
             searchBarFlag: false,
-            searchData:[],
+            searchData: [],
             totalPage: 0,
-            searchKeyWord:'',
-            hotWord:[]
+            searchKeyWord: '',
+            hotWord: []
         };
     }
 
@@ -65,11 +66,16 @@ class Home extends React.Component {
         //     globalLoading: false
         //   })
         // });
-          let swipe = new Promise((resolve, reject) => {
-            // axios.post('/homes/swipe').then((data)=>{
-            axios.get('http://127.0.0.1:18080/ad').then((data)=>{
-                resolve(data.data.list);
-            });
+        let swipe = new Promise((resolve, reject) => {
+            const data = API.get("ad").then((data)=>{
+                console.log("data:" + data)
+                resolve(data.data.list)
+            })
+
+            // axios.get('http://127.0.0.1:18080/ad').then((data) => {
+            //     console.log("swipe:" + JSON.stringify(data))
+            //     resolve(data.data.list);
+            // });
         })
 
         // let swipe = new Promise((resolve, reject) => {
@@ -80,27 +86,45 @@ class Home extends React.Component {
             /*axios.post('/homes/menu').then((data)=>{
                 resolve(data.data.list);
             });*/
-            axios.get('http://localhost:18080/mock/index/menu').then((data) => {
-                resolve(data.data.list);
-            });
+            const data = API.get("mock/index/menu").then((data)=>{
+                console.log("data:" + data)
+                resolve(data.data.list)
+            })
+
+            // axios.get('http://localhost:18080/mock/index/menu').then((data) => {
+            //     console.log("menu:" + data.data.list)
+            //     resolve(data.data.list);
+            // });
         })
         let info = new Promise((resolve, reject) => {
-            axios.get('http://localhost:18080/mock/index/info').then((data) => {
-                resolve(data.data.list);
-            });
+            const data = API.get("mock/index/info").then((data)=>{
+                console.log("data:" + data)
+                resolve(data.data.list)
+            })
         })
         let faq = new Promise((resolve, reject) => {
-            axios.get('http://localhost:18080/mock/index/faq').then((data) => {
-                resolve(data.data.list);
-            });
+            API.get("mock/index/faq").then((data)=>{
+                console.log("data:" + data)
+                resolve(data.data.list)
+            })
+
+
+            // axios.get('http://localhost:18080/mock/index/faq').then((data) => {
+            //     console.log("faq:" + data)
+            //     resolve(data.data.list);
+            // });
         })
 
         let house = new Promise((resolve, reject) => {
-            axios.get('http://localhost:18080/mock/index/house').then((data) => {
-                resolve(data.data.list);
-            });
+            API.get("mock/index/house").then((data)=>{
+                console.log("data:" + data)
+                resolve(data.data.list)
+            })
+
+
+
         })
-        Promise.all([swipe,menu, info, faq, house]).then((result) => {
+        Promise.all([swipe, menu, info, faq, house]).then((result) => {
             console.log(result[0]);
             this.setState({
                 swipeData: result[0],
@@ -162,13 +186,13 @@ class Home extends React.Component {
         })
     }
     search = (event, data) => {
-        let value = data.value?data.value:this.state.searchKeyWord;
+        let value = data.value ? data.value : this.state.searchKeyWord;
         let _this = this;
         let page = data.page ? data.page : 1;
         _this.searchHandle();
-        this.setState({searchKeyWord:value});
-        axios.get("http://127.0.0.1:18080/search?keyword=" + value + '&page='+page).then((data) => {
-            _this.setState({searchData: data.list, hotWord: data.hotWord,totalPage: data.totalPage});
+        this.setState({searchKeyWord: value});
+        axios.get("http://127.0.0.1:18080/api/search?keyword=" + value + '&page=' + page).then((data) => {
+            _this.setState({searchData: data.list, hotWord: data.hotWord, totalPage: data.totalPage});
         });
     }
 
@@ -279,13 +303,14 @@ class Home extends React.Component {
                 {this.state.searchBarFlag ? <SearchBar totalPage={this.state.totalPage} searchPage={this.search}
                                                        searchData={this.state.searchData}
                                                        hideSearchBar={this.hideSearchBar}
-                                                        hotWord={this.state.hotWord}/> : null}
+                                                       hotWord={this.state.hotWord}/> : null}
                 <Dimmer inverted active={this.state.globalLoading} page>
                     <Loader>Loading</Loader>
                 </Dimmer>
                 <div className="home-topbar">
                     {/*onBlur={this.hideSearchBar} onFocus={this.searchHandle}*/}
-                    <Input onChange={this.search.bind(this)} value={this.state.searchKeyWord} fluid icon={{name: 'search', circular: true, link: true}}
+                    <Input onChange={this.search.bind(this)} value={this.state.searchKeyWord} fluid
+                           icon={{name: 'search', circular: true, link: true}}
                            placeholder='搜房源...'/>
                 </div>
                 <div className="home-content">

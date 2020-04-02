@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import './login.css';
-import { Form } from 'semantic-ui-react';
+import {Form, FormButton} from 'semantic-ui-react';
 import axios from 'axios';
 import { withRouter } from 'react-router';
-import config from './common.js';
+import {REQUEST_URL} from './common.js';
+import {Redirect} from "react-router-dom";
+import {Toast} from "antd-mobile";
+import {API} from "./modules/utils/api";
 
 class Login extends Component {
   state = { 
@@ -17,21 +20,38 @@ class Login extends Component {
   handleSubmit = () => {
     const { username, password } = this.state
     const { history } = this.props
-    axios.post(config.apiBaseUrl + 'users/login',{
-      uname: username,
-      pwd: password
-    }).then(function(ret){
-      if(ret.meta.status === 200) {
+    API.post(REQUEST_URL+'user/app/login',{
+      username: username,
+      password: password
+    }).then((ret)=>{
+      if(ret.resultCode === 200) {
         // 登录成功,保存token信息并实现跳转
         localStorage.setItem('mytoken',ret.data.token);
-        localStorage.setItem('uid',ret.data.uid);
         history.push('/home');
       } else {
-        alert(ret.meta.msg);
+        Toast.fail(ret.resultMsg,1);
       }
-    }).catch(function(data){
-      console.log(data)
+    }).catch((error)=>{
+      console.log(error)
     })
+    // axios.post(REQUEST_URL + 'user/app/login',{
+    //   username: username,
+    //   password: password
+    // }).then(function(ret){
+    //   console.log(ret)
+    //   if(ret.resultCode === 200) {
+    //     // 登录成功,保存token信息并实现跳转
+    //     localStorage.setItem('mytoken',ret.data.token);
+    //
+    //
+    //
+    //     history.push('/home');
+    //   } else {
+    //     Toast.fail(ret.resultMsg,1);
+    //   }
+    // }).catch(function(data){
+    //   console.log(data)
+    // })
   }
   componentDidMount() {
 
@@ -67,6 +87,7 @@ class Login extends Component {
               placeholder='请输入密码...' 
             />
             <Form.Button positive content='登录'/>
+            <FormButton  content='注册' onClick={()=>(<Redirect to='/home' />)}/>
           </Form>
         </div>
       </div>

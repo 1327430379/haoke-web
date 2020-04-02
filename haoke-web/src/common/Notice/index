@@ -1,0 +1,19 @@
+import React, {Component} from 'react';
+import {List} from "antd-mobile";
+import ListItem from "antd-mobile/es/list/ListItem";
+
+class Index extends Component {
+    render() {
+        return (
+            <div>
+                <List>
+                    <ListItem>
+                        <h3>看房通知</h3>
+                    </ListItem>
+                </List>
+            </div>
+        );
+    }
+}
+
+export default Index;
