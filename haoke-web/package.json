@@ -37,7 +37,7 @@
   "devDependencies": {
     "babel-plugin-import": "^1.13.0",
     "css-loader": "^3.4.2",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "sass-loader": "^7.3.1",
     "style-loader": "^1.1.3"
   },
