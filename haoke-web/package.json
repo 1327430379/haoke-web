@@ -12,7 +12,7 @@
     "graphql": "^14.0.2",
     "iscroll": "^5.2.0",
     "iscroll-luo": "^1.2.3",
-    "nuka-carousel": "^4.2.3",
+    "nuka-carousel": "^4.8.4",
     "peer": "^0.5.1",
     "prop-types": "latest",
     "react": "^16.3.2",
